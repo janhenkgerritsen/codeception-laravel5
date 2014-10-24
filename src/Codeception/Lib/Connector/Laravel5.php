@@ -2,6 +2,7 @@
 namespace Codeception\Lib\Connector;
 
 use Illuminate\Contracts\Http\Kernel;
+use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Request as DomRequest;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,6 +13,11 @@ class Laravel5 extends Client implements HttpKernelInterface
 {
 
     /**
+     * @var Application
+     */
+    private $app;
+
+    /**
      * @var HttpKernelInterface
      */
     private $httpKernel;
@@ -19,11 +25,14 @@ class Laravel5 extends Client implements HttpKernelInterface
     /**
      * Constructor.
      *
-     * @param HttpKernelInterface $httpKernel
+     * @param Application $app
      */
-    public function __construct(Kernel $httpKernel)
+    public function __construct(Application $app)
     {
-        $this->httpKernel = $httpKernel;
+        $this->app = $app;
+        $this->httpKernel = $this->app->make('Illuminate\Contracts\Http\Kernel');
+        $this->httpKernel->bootstrap();
+        $this->app->boot();
 
         parent::__construct($this);
     }
@@ -39,6 +48,8 @@ class Laravel5 extends Client implements HttpKernelInterface
     public function handle(DomRequest $request, $type = self::MASTER_REQUEST, $catch = true) {
         $request = Request::createFromBase($request);
         $request->enableHttpMethodParameterOverride();
+
+        $this->app->bind('request', $request);
 
         return $this->httpKernel->handle($request);
     }

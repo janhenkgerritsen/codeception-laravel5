@@ -6,6 +6,7 @@ use Codeception\Lib\Connector\Laravel5 as LaravelConnector;
 use Codeception\Lib\Framework;
 use Codeception\Lib\Interfaces\ActiveRecord;
 use Codeception\Subscriber\ErrorHandler;
+use Illuminate\Http\Request;
 
 /**
  *
@@ -83,12 +84,9 @@ class Laravel5 extends Framework implements ActiveRecord
     public function _before(\Codeception\TestCase $test)
     {
         $this->app = $this->getApplication();
+        $this->app->instance('request', new Request());
 
-        $httpKernel = $this->app->make('Illuminate\Contracts\Http\Kernel');
-        $httpKernel->bootstrap();
-        $this->app->boot();
-
-        $this->client = new LaravelConnector($httpKernel);
+        $this->client = new LaravelConnector($this->app);
         $this->client->followRedirects(true);
 
         if ($this->config['cleanup']) {
