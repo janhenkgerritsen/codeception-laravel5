@@ -1,0 +1,21 @@
+{
+    "name": "janhenkgerritsen/codeception-laravel5",
+    "description": "Laravel5 module for Codeception",
+    "keywords": "Codeception, Laravel, Laravel5",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jan-Henk Gerritsen",
+            "email": "j.h.gerritsen@movage.nl"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "codeception/codeception": "~2.0"
+    },
+    "autoload": {
+        "psr-0": {
+            "Codeception": "src"
+        }
+    }
+}
