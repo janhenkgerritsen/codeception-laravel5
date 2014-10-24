@@ -1,7 +1,7 @@
 {
     "name": "janhenkgerritsen/codeception-laravel5",
     "description": "Laravel5 module for Codeception",
-    "keywords": "Codeception, Laravel, Laravel5",
+    "keywords": ["Codeception", "Laravel", "Laravel5"],
     "license": "MIT",
     "authors": [
         {
