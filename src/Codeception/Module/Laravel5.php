@@ -89,7 +89,7 @@ class Laravel5 extends Framework implements ActiveRecord
     {
         $this->initializeLaravel();
 
-        if ($this->config['cleanup']) {
+        if ($this->app['db'] && $this->config['cleanup']) {
             $this->app['db']->beginTransaction();
         }
     }
@@ -101,7 +101,7 @@ class Laravel5 extends Framework implements ActiveRecord
      */
     public function _after(\Codeception\TestCase $test)
     {
-        if ($this->config['cleanup']) {
+        if ($this->app['db'] && $this->config['cleanup']) {
             $this->app['db']->rollback();
         }
 
