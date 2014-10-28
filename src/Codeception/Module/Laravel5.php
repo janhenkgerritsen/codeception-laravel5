@@ -14,6 +14,9 @@ use Illuminate\Http\Request;
  * Please try it and leave your feedback.
  * The module is based on the Laravel 4 module by Davert.
  *
+ * ## Demo project
+ * <https://github.com/janhenkgerritsen/codeception-laravel5-sample>
+ *
  * ## Status
  *
  * * Maintainer: **Jan-Henk Gerritsen**

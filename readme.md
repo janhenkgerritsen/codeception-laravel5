@@ -10,3 +10,6 @@ You can install this package through composer:
 
 ## Usage
 You can use this module as any other Codeception module, by adding 'Laravel5' to the enabled modules in your Codeception suite configurations.
+
+## Demo project
+A demo Laravel 5 project that uses this module can be found at <https://github.com/janhenkgerritsen/codeception-laravel5-sample>.
