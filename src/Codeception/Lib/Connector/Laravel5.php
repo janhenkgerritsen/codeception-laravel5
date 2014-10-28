@@ -1,7 +1,6 @@
 <?php
 namespace Codeception\Lib\Connector;
 
-use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Request as DomRequest;

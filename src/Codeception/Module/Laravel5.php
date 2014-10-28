@@ -11,14 +11,14 @@ use Illuminate\Http\Request;
 /**
  *
  * This module allows you to run functional tests for Laravel 5.
- * Module is very fresh and should be improved with Laravel testing capabilities.
- * Please try it and leave your feedbacks. If you want to maintain it - connect Codeception team.
+ * Please try it and leave your feedback.
+ * The module is based on the Laravel 4 module by Davert.
  *
  * ## Status
  *
- * * Maintainer: **Davert**
- * * Stability: **stable**
- * * Contact: davert.codeception@mailican.com
+ * * Maintainer: **Jan-Henk Gerritsen**
+ * * Stability: **dev**
+ * * Contact: j.h.gerritsen@movage.nl
  *
  * ## Config
  *
@@ -73,6 +73,7 @@ class Laravel5 extends Framework implements ActiveRecord
     {
         $this->setTestingEnvironment();
         $this->revertErrorHandler();
+        $this->initializeLaravel();
     }
 
     /**
@@ -83,11 +84,7 @@ class Laravel5 extends Framework implements ActiveRecord
      */
     public function _before(\Codeception\TestCase $test)
     {
-        $this->app = $this->getApplication();
-        $this->app->instance('request', new Request());
-
-        $this->client = new LaravelConnector($this->app);
-        $this->client->followRedirects(true);
+        $this->initializeLaravel();
 
         if ($this->config['cleanup']) {
             $this->app['db']->beginTransaction();
@@ -137,6 +134,19 @@ class Laravel5 extends Framework implements ActiveRecord
     }
 
     /**
+     * Initialize the Laravel framework.
+     *
+     * @throws ModuleConfig
+     */
+    protected function initializeLaravel()
+    {
+        $this->app = $this->getApplication();
+        $this->app->instance('request', new Request());
+        $this->client = new LaravelConnector($this->app);
+        $this->client->followRedirects(true);
+    }
+
+    /**
      * Get the Laravel application object.
      *
      * @return \Illuminate\Foundation\Application
@@ -181,7 +191,7 @@ class Laravel5 extends Framework implements ActiveRecord
      */
     public function amOnRoute($route, $params = [])
     {
-        $url = $this->app['url']->route($route, $params);
+        $url = $this->app['url']->route($route, $params, false);
         codecept_debug($url);
         $this->amOnPage($url);
     }
@@ -200,7 +210,7 @@ class Laravel5 extends Framework implements ActiveRecord
      */
     public function amOnAction($action, $params = [])
     {
-        $url = $this->app['url']->action($action, $params);
+        $url = $this->app['url']->action($action, $params, false);
         $this->amOnPage($url);
     }
 
@@ -313,15 +323,16 @@ class Laravel5 extends Framework implements ActiveRecord
 
     /**
      * Set the currently logged in user for the application.
-     * Takes either `UserInterface` instance or array of credentials.
+     * Takes either an object that implements the User interface or
+     * an array of credentials.
      *
-     * @param  \Illuminate\Auth\UserInterface|array $user
+     * @param  \Illuminate\Contracts\Auth\User|array $user
      * @param  string $driver
      * @return void
      */
     public function amLoggedAs($user, $driver = null)
     {
-        if ($user instanceof \Illuminate\Auth\UserInterface) {
+        if ($user instanceof \Illuminate\Contracts\Auth\User) {
             $this->app['auth']->driver($driver)->setUser($user);
         } else {
             $this->app['auth']->driver($driver)->attempt($user);
@@ -397,7 +408,7 @@ class Laravel5 extends Framework implements ActiveRecord
     {
         $id = $this->app['db']->table($model)->insertGetId($attributes);
         if (!$id) {
-            $this->fail("Couldnt insert record into table $model");
+            $this->fail("Couldn't insert record into table $model");
         }
         return $id;
     }
@@ -473,5 +484,4 @@ class Laravel5 extends Framework implements ActiveRecord
         }
         return $query->first();
     }
-
 }
