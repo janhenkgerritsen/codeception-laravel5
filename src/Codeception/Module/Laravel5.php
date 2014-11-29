@@ -6,6 +6,7 @@ use Codeception\Lib\Connector\Laravel5 as LaravelConnector;
 use Codeception\Lib\Framework;
 use Codeception\Lib\Interfaces\ActiveRecord;
 use Codeception\Subscriber\ErrorHandler;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\Request;
 
 /**
@@ -335,7 +336,7 @@ class Laravel5 extends Framework implements ActiveRecord
      */
     public function amLoggedAs($user, $driver = null)
     {
-        if ($user instanceof \Illuminate\Contracts\Auth\User) {
+        if ($user instanceof Authenticatable) {
             $this->app['auth']->driver($driver)->setUser($user);
         } else {
             $this->app['auth']->driver($driver)->attempt($user);
