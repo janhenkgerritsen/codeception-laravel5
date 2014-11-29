@@ -40,12 +40,13 @@ class Laravel5 extends Client implements HttpKernelInterface, TerminableInterfac
     /**
      * Handle a request.
      *
-     * @param Request $request
+     * @param DomRequest $request
      * @param int $type
      * @param bool $catch
      * @return Response
      */
-    public function handle(DomRequest $request, $type = self::MASTER_REQUEST, $catch = true) {
+    public function handle(DomRequest $request, $type = self::MASTER_REQUEST, $catch = true) 
+    {
         $request = Request::createFromBase($request);
         $request->enableHttpMethodParameterOverride();
 
