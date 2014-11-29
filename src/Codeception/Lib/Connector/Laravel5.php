@@ -7,8 +7,9 @@ use Symfony\Component\HttpFoundation\Request as DomRequest;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Client;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\HttpKernel\TerminableInterface;
 
-class Laravel5 extends Client implements HttpKernelInterface
+class Laravel5 extends Client implements HttpKernelInterface, TerminableInterface
 {
 
     /**
@@ -39,12 +40,13 @@ class Laravel5 extends Client implements HttpKernelInterface
     /**
      * Handle a request.
      *
-     * @param Request $request
+     * @param DomRequest $request
      * @param int $type
      * @param bool $catch
      * @return Response
      */
-    public function handle(DomRequest $request, $type = self::MASTER_REQUEST, $catch = true) {
+    public function handle(DomRequest $request, $type = self::MASTER_REQUEST, $catch = true) 
+    {
         $request = Request::createFromBase($request);
         $request->enableHttpMethodParameterOverride();
 
@@ -52,4 +54,17 @@ class Laravel5 extends Client implements HttpKernelInterface
 
         return $this->httpKernel->handle($request);
     }
+
+	/**
+	 * Terminates a request/response cycle.
+	 *
+	 * @param DomRequest $request A Request instance
+	 * @param Response $response A Response instance
+	 *
+	 * @api
+	 */
+	public function terminate(DomRequest $request, Response $response)
+	{
+		$this->httpKernel->terminate($request, $response);
+	}
 }
