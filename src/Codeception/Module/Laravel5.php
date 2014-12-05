@@ -126,7 +126,7 @@ class Laravel5 extends Framework implements ActiveRecord
      */
     public function _afterStep(\Codeception\Step $step)
     {
-        \Facade::clearResolvedInstances();
+        \Illuminate\Support\Facades\Facade::clearResolvedInstances();
 
         parent::_afterStep($step);
     }
