@@ -120,6 +120,18 @@ class Laravel5 extends Framework implements ActiveRecord
     }
 
     /**
+     * After step hook.
+     *
+     * @param \Codeception\Step $step
+     */
+    public function _afterStep(\Codeception\Step $step)
+    {
+        \Facade::clearResolvedInstances();
+
+        parent::_afterStep($step);
+    }
+
+    /**
      * Set testing environment, the Laravel framework initializes this
      * in Illuminate\Foundation\Bootstrap\DetectEnvironment
      */
