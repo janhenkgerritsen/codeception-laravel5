@@ -302,8 +302,19 @@ class Laravel5 extends Framework implements ActiveRecord
     }
 
     /**
-     * Assert that Session has error messages
-     * The seeSessionHasValues cannot be used, as Message bag Object is returned by Laravel4
+     * Assert that the form errors are bound to the View.
+     *
+     * @return bool
+     */
+    public function seeFormHasErrors()
+    {
+        var_dump('hierooo');
+        $viewErrorBag = $this->app->make('view')->shared('errors');
+        $this->assertTrue(count($viewErrorBag) > 0);
+    }
+
+    /**
+     * Assert that specific form error messages are set in the view.
      *
      * Useful for validation messages and generally messages array
      *  e.g.
@@ -313,28 +324,40 @@ class Laravel5 extends Framework implements ActiveRecord
      *
      * ``` php
      * <?php
-     * $I->seeSessionErrorMessage(array('username'=>'Invalid Username'));
+     * $I->seeFormErrorMessages(array('username'=>'Invalid Username'));
      * ?>
      * ```
      * @param array $bindings
      */
-    public function seeSessionErrorMessage(array $bindings)
+    public function seeFormErrorMessages(array $bindings)
     {
-        $this->seeSessionHasErrors(); //check if  has errors at all
-        $errorMessageBag = $this->app['session']->get('errors');
         foreach ($bindings as $key => $value) {
-            $this->assertEquals($value, $errorMessageBag->first($key));
+            $this->seeFormErrorMessage($key, $value);
         }
     }
 
     /**
-     * Assert that the session has errors bound.
+     * Assert that specific form error message is set in the view.
      *
-     * @return bool
+     * Useful for validation messages and generally messages array
+     *  e.g.
+     *  return `Redirect::to('register')->withErrors($validator);`
+     *
+     * Example of Usage
+     *
+     * ``` php
+     * <?php
+     * $I->seeFormErrorMessage('username', 'Invalid Username');
+     * ?>
+     * ```
+     * @param string $key
+     * @param string $errorMessage
      */
-    public function seeSessionHasErrors()
+    public function seeFormErrorMessage($key, $errorMessage)
     {
-        $this->seeInSession('errors');
+        $viewErrorBag = $this->app['view']->shared('errors');
+
+        $this->assertEquals($errorMessage, $viewErrorBag->first($key));
     }
 
     /**
