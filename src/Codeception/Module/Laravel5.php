@@ -156,19 +156,19 @@ class Laravel5 extends Framework implements ActiveRecord
      */
     protected function initializeLaravel()
     {
-        $this->app = $this->getApplication();
+        $this->app = $this->bootApplication();
         $this->app->instance('request', new Request());
         $this->client = new LaravelConnector($this->app);
         $this->client->followRedirects(true);
     }
 
     /**
-     * Get the Laravel application object.
+     * Boot the Laravel application object.
      *
      * @return \Illuminate\Foundation\Application
      * @throws \Codeception\Exception\ModuleConfig
      */
-    protected function getApplication()
+    protected function bootApplication()
     {
         $projectDir = explode('workbench', \Codeception\Configuration::projectDir())[0];
         $projectDir .= $this->config['root'];
@@ -192,6 +192,16 @@ class Laravel5 extends Framework implements ActiveRecord
 
         return $app;
     }
+	
+	/**
+     * Provides access the Laravel application object.
+     *
+     * @return \Illuminate\Foundation\Application
+     */
+	public function getApplication()
+	{
+		return $this->app;
+	}
 
     /**
      * Opens web page using route name and parameters.
