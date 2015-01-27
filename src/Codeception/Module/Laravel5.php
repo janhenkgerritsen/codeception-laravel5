@@ -27,7 +27,7 @@ use Illuminate\Http\Request;
  * ## Config
  *
  * * cleanup: `boolean`, default `true` - all db queries will be run in transaction, which will be rolled back at the end of test.
- * * environment: `string`, default `testing` - When running in unit testing mode, we will set a different environment.
+ * * environment_file: `string`, default `.env` - The .env file to load for the tests.
  * * bootstrap: `string`, default `bootstrap/app.php` - Relative path to app.php config file.
  * * root: `string`, default `` - Root path of our application.
  *
@@ -60,7 +60,7 @@ class Laravel5 extends Framework implements ActiveRecord
         $this->config = array_merge(
             array(
                 'cleanup' => true,
-                'environment' => 'testing',
+                'environment_file' => '.env',
                 'bootstrap' => 'bootstrap' . DIRECTORY_SEPARATOR . 'app.php',
                 'root' => '',
             ),
@@ -75,7 +75,6 @@ class Laravel5 extends Framework implements ActiveRecord
      */
     public function _initialize()
     {
-        $this->setTestingEnvironment();
         $this->revertErrorHandler();
         $this->initializeLaravel();
     }
@@ -137,14 +136,6 @@ class Laravel5 extends Framework implements ActiveRecord
     }
 
     /**
-     * Set testing environment, the Laravel framework initializes this
-     * in Illuminate\Foundation\Bootstrap\DetectEnvironment
-     */
-    protected function setTestingEnvironment() {
-        putenv('APP_ENV=' . $this->config['environment']);
-    }
-
-    /**
      * Revert back to the Codeception error handler,
      * becauses Laravel registers it's own error handler.
      */
@@ -194,6 +185,7 @@ class Laravel5 extends Framework implements ActiveRecord
         }
 
         $app = require $bootstrapFile;
+        $app->loadEnvironmentFrom($this->config['environment_file']);
 
         return $app;
     }
@@ -323,7 +315,6 @@ class Laravel5 extends Framework implements ActiveRecord
      */
     public function seeFormHasErrors()
     {
-        var_dump('hierooo');
         $viewErrorBag = $this->app->make('view')->shared('errors');
         $this->assertTrue(count($viewErrorBag) > 0);
     }
