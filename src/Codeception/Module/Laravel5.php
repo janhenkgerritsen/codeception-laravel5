@@ -22,7 +22,7 @@ use Illuminate\Http\Request;
  *
  * * Maintainer: **Jan-Henk Gerritsen**
  * * Stability: **dev**
- * * Contact: j.h.gerritsen@movage.nl
+ * * Contact: janhenkgerritsen@gmail.com
  *
  * ## Config
  *
