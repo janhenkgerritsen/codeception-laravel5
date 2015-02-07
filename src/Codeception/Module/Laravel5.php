@@ -166,19 +166,15 @@ class Laravel5 extends Framework implements ActiveRecord
      */
     protected function bootApplication()
     {
-        $projectDir = explode('workbench', \Codeception\Configuration::projectDir())[0];
+        $projectDir = \Codeception\Configuration::projectDir();
         $projectDir .= $this->config['root'];
         require $projectDir . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 
         \Illuminate\Support\ClassLoader::register();
 
-        if (is_dir($workbench = $projectDir . 'workbench')) {
-            \Illuminate\Workbench\Starter::start($workbench);
-        }
-
         $bootstrapFile = $projectDir . $this->config['bootstrap'];
 
-        if (!file_exists($bootstrapFile)) {
+        if (! file_exists($bootstrapFile)) {
             throw new ModuleConfig(
                 $this, "Laravel bootstrap file not found in $bootstrapFile.\nPlease provide a valid path to it using 'bootstrap' config param. "
             );
