@@ -1,6 +1,5 @@
 <?php
 namespace Codeception\Lib\Connector;
-
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Request as DomRequest;
@@ -8,20 +7,16 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Client;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\TerminableInterface;
-
 class Laravel5 extends Client implements HttpKernelInterface, TerminableInterface
 {
-
     /**
      * @var Application
      */
     private $app;
-
     /**
      * @var HttpKernelInterface
      */
     private $httpKernel;
-
     /**
      * Constructor.
      *
@@ -33,10 +28,8 @@ class Laravel5 extends Client implements HttpKernelInterface, TerminableInterfac
         $this->httpKernel = $this->app->make('Illuminate\Contracts\Http\Kernel');
         $this->httpKernel->bootstrap();
         $this->app->boot();
-
         parent::__construct($this);
     }
-
     /**
      * Handle a request.
      *
@@ -49,12 +42,9 @@ class Laravel5 extends Client implements HttpKernelInterface, TerminableInterfac
     {
         $request = Request::createFromBase($request);
         $request->enableHttpMethodParameterOverride();
-
         $this->app->bind('request', $request);
-
         return $this->httpKernel->handle($request);
     }
-
 	/**
 	 * Terminates a request/response cycle.
 	 *
@@ -65,6 +55,6 @@ class Laravel5 extends Client implements HttpKernelInterface, TerminableInterfac
 	 */
 	public function terminate(DomRequest $request, Response $response)
 	{
-		$this->httpKernel->terminate($request, $response);
+		$this->httpKernel->terminate(Request::createFromBase($request), $response);
 	}
 }
