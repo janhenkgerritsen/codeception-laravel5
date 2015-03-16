@@ -1,7 +1,5 @@
 # Codeception Laravel 5 module
 
-## This module is included in Codeception now, so this package is now obsolete and will not be maintained here.
-
 This package provides a Laravel 5 module for [Codeception](https://github.com/Codeception/Codeception).
 It is based on the Laravel 4 module by Davert that is currently included with Codeception.
 
