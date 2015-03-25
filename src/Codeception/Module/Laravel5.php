@@ -186,7 +186,7 @@ class Laravel5 extends Framework implements ActiveRecord
         return $app;
     }
 
-	/**
+    /**
      * Provides access the Laravel application object.
      *
      * @return \Illuminate\Foundation\Application
