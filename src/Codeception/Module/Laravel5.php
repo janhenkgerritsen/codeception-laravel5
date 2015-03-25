@@ -191,10 +191,10 @@ class Laravel5 extends Framework implements ActiveRecord
      *
      * @return \Illuminate\Foundation\Application
      */
-	public function getApplication()
-	{
-		return $this->app;
-	}
+    public function getApplication()
+    {
+        return $this->app;
+    }
 
     /**
      * Opens web page using route name and parameters.
