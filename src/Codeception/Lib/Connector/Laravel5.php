@@ -30,6 +30,24 @@ class Laravel5 extends Client implements HttpKernelInterface, TerminableInterfac
         $this->app->boot();
         parent::__construct($this);
     }
+
+    /**
+     * Sets server parameters.
+     *
+     * @param array $server An array of server parameters
+     *
+     * @api
+     */
+    public function setServerParameters(array $server)
+    {
+        $appUrl = $this->app['config']->get('app.url', 'http://localhost');
+        $appUrl = rtrim(preg_replace('/^https?\:\/\//', '', $appUrl), '/');
+
+        parent::setServerParameters(array_merge(array(
+            'HTTP_HOST' => $appUrl,
+        ), $server));
+    }
+    
     /**
      * Handle a request.
      *
