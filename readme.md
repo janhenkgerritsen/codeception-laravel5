@@ -1,5 +1,7 @@
 # Codeception Laravel 5 module
 
+## This package is not maintained on this repository any longer since it is included in Codeception as of version 2.11. Please report issues there.
+
 This package provides a Laravel 5 module for [Codeception](https://github.com/Codeception/Codeception).
 It is based on the Laravel 4 module by Davert that is currently included with Codeception.
 
