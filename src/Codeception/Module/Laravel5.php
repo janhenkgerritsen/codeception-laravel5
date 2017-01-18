@@ -500,7 +500,9 @@ class Laravel5 extends Framework implements ActiveRecord
      * Checks that record exists in database.
      *
      * ``` php
+     * <?php
      * $I->seeRecord('users', array('name' => 'davert'));
+     * ?>
      * ```
      *
      * @param $model
